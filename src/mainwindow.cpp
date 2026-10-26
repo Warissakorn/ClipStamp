@@ -64,7 +64,7 @@ static QPushButton *button(const QString &text, QLayout *layout) {
     return result;
 }
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), probe_(this), queue_(this) {
-    project_.outputDirectory = QDir(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)).filePath("VideoTime");
+    project_.outputDirectory = QDir(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)).filePath(QStringLiteral("ClipStamp"));
     initializeAppearance();
     setLocale(arabicNumberLocale());
     buildUi();
@@ -81,7 +81,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), probe_(this), que
     setMinimumSize(1060, 680);
     const auto available = QGuiApplication::primaryScreen()->availableGeometry();
     resize(std::min(1440, available.width() - 40), std::min(900, available.height() - 60));
-    setWindowTitle(QStringLiteral("VideoTime — ใส่เวลาให้วิดีโอ"));
+    setWindowTitle(QStringLiteral("ClipStamp — ใส่เวลาให้วิดีโอ"));
 }
 MainWindow::~MainWindow() {
     disconnect(player_, nullptr, this, nullptr);
@@ -124,7 +124,7 @@ void MainWindow::buildUi() {
     headerLayout->setSpacing(10);
     auto identity = new QHBoxLayout;
     identity->setSpacing(12);
-    auto brand = new QLabel("VideoTime");
+    auto brand = new QLabel(QStringLiteral("ClipStamp"));
     brand->setObjectName("brand");
     identity->addWidget(brand);
     identity->addWidget(label(QStringLiteral("ใส่เวลาให้วิดีโอ ง่ายในที่เดียว"), "muted"));
@@ -405,14 +405,14 @@ void MainWindow::buildUi() {
     styleLayout->addLayout(presetRow);
     styleLayout->addStretch();
     connect(loadPresetButton, &QPushButton::clicked, this, [this] {
-        const auto file = QFileDialog::getOpenFileName(this, QStringLiteral("เปิดรูปแบบ"), {}, "VideoTime Preset (*.json)");
+        const auto file = QFileDialog::getOpenFileName(this, QStringLiteral("เปิดรูปแบบ"), {}, QStringLiteral("ClipStamp Preset (*.json)"));
         if (file.isEmpty()) return;
         QString error;
         if (!loadPreset(file, &project_.style, &error)) { QMessageBox::warning(this, QStringLiteral("เปิดรูปแบบไม่ได้"), error); return; }
         syncSettings(); updateOverlay(); markDirty();
     });
     connect(savePresetButton, &QPushButton::clicked, this, [this] {
-        const auto file = QFileDialog::getSaveFileName(this, QStringLiteral("บันทึกรูปแบบ"), "style.json", "VideoTime Preset (*.json)");
+        const auto file = QFileDialog::getSaveFileName(this, QStringLiteral("บันทึกรูปแบบ"), "style.json", QStringLiteral("ClipStamp Preset (*.json)"));
         if (file.isEmpty()) return;
         QString error;
         if (!savePreset(file, project_.style, &error)) QMessageBox::warning(this, QStringLiteral("บันทึกไม่ได้"), error);
@@ -596,7 +596,7 @@ void MainWindow::chooseColor(QColor *color) {
 }
 void MainWindow::markDirty() {
     dirty_ = true;
-    setWindowTitle(QStringLiteral("VideoTime — %1 *").arg(projectFile_.isEmpty() ? QStringLiteral("โปรเจกต์ใหม่") : QFileInfo(projectFile_).fileName()));
+    setWindowTitle(QStringLiteral("ClipStamp — %1 *").arg(projectFile_.isEmpty() ? QStringLiteral("โปรเจกต์ใหม่") : QFileInfo(projectFile_).fileName()));
 }
 void MainWindow::syncSettings() {
     syncing_ = true;
@@ -762,11 +762,11 @@ void MainWindow::chooseTools() {
 }
 bool MainWindow::saveCurrent(bool saveAs) {
     QString file = projectFile_;
-    if (file.isEmpty() || saveAs) file = QFileDialog::getSaveFileName(this,QStringLiteral("บันทึกโปรเจกต์"),file.isEmpty()?"project.vtime.json":file,"VideoTime Project (*.json)");
+    if (file.isEmpty() || saveAs) file = QFileDialog::getSaveFileName(this,QStringLiteral("บันทึกโปรเจกต์"),file.isEmpty()?"project.vtime.json":file,QStringLiteral("ClipStamp Project (*.json)"));
     if (file.isEmpty()) return false;
     QString error;
     if (!saveProject(file,project_,&error)) { QMessageBox::warning(this,QStringLiteral("บันทึกไม่ได้"),error); return false; }
-    projectFile_ = file; dirty_ = false; setWindowTitle("VideoTime — " + QFileInfo(file).fileName()); return true;
+    projectFile_ = file; dirty_ = false; setWindowTitle(QStringLiteral("ClipStamp — ") + QFileInfo(file).fileName()); return true;
 }
 bool MainWindow::maybeSave() {
     if (!dirty_) return true;
@@ -776,7 +776,7 @@ bool MainWindow::maybeSave() {
 }
 void MainWindow::openProject() {
     if (!maybeSave()) return;
-    const auto file = QFileDialog::getOpenFileName(this,QStringLiteral("เปิดโปรเจกต์"),{},"VideoTime Project (*.json)");
+    const auto file = QFileDialog::getOpenFileName(this,QStringLiteral("เปิดโปรเจกต์"),{},QStringLiteral("ClipStamp Project (*.json)"));
     if (file.isEmpty()) return;
     Project loaded; QString error;
     if (!loadProject(file,&loaded,&error)) { QMessageBox::warning(this,QStringLiteral("เปิดไม่ได้"),error); return; }
@@ -784,7 +784,7 @@ void MainWindow::openProject() {
     project_ = loaded; projectFile_ = file; dirty_ = false; states_.clear(); details_.clear(); failed_.clear(); pending_.clear();
     for (int i=0;i<project_.clips.size();++i) { states_.append(QStringLiteral("รออ่านข้อมูล")); details_.append(QString()); pending_.append(i); }
     syncSettings(); rebuildList(); if (!project_.clips.isEmpty()) clips_->selectRow(0); updateOverlay(); probeNext();
-    setWindowTitle("VideoTime — " + QFileInfo(file).fileName());
+    setWindowTitle(QStringLiteral("ClipStamp — ") + QFileInfo(file).fileName());
 }
 void MainWindow::runExport(bool sample, bool retry) {
     if (queue_.isRunning()) return;

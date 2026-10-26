@@ -1,6 +1,6 @@
 # Third-party components
 
-VideoTime dynamically uses Qt 6.8.3 (Qt Base, Qt Multimedia and runtime dependencies). Qt's open-source license terms vary by component; the LGPLv3/GPLv3 texts are included under licenses. Qt is not modified by this project. Qt sources and exact version: https://download.qt.io/archive/qt/6.8/6.8.3/ and https://code.qt.io/.
+ClipStamp dynamically uses Qt 6.8.3 (Qt Base, Qt Multimedia and runtime dependencies). Qt's open-source license terms vary by component; the LGPLv3/GPLv3 texts are included under licenses. Qt is not modified by this project. Qt sources and exact version: https://download.qt.io/archive/qt/6.8/6.8.3/ and https://code.qt.io/.
 
 FFmpeg is executed as a separate program. The local package may use FFmpeg and dependent DLLs from the installed Shotcut distribution. That build enables GPL components including libx264; it is not an LGPL-only build. Its COPYING file is copied into tools. Source/build references: https://github.com/mltframework/shotcut and https://github.com/mltframework/shotcut/tree/master/scripts; FFmpeg: https://ffmpeg.org/ and https://github.com/FFmpeg/FFmpeg; x264: https://www.videolan.org/developers/x264.html.
 

@@ -1,6 +1,8 @@
 # Architecture
 
-VideoTime is a C++20 Qt Widgets desktop application. CMake builds a domain/media library, the UI, and tests.
+ClipStamp is a C++20 Qt Widgets desktop application. CMake builds a domain/media library, the UI, and tests.
+
+The application was previously named VideoTime. Project and preset JSON keep their existing `VideoTimeProject` and `VideoTimePreset` type identifiers so existing files remain compatible. Tool discovery accepts `CLIPSTAMP_FFMPEG_DIR`, with the old environment variable and saved tool paths as fallbacks.
 
 ## Data and timing
 

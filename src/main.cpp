@@ -8,8 +8,9 @@
 int main(int argc, char **argv) {
     QLocale::setDefault(vt::arabicNumberLocale());
     QApplication app(argc, argv);
-    QCoreApplication::setOrganizationName("VideoTime");
-    QCoreApplication::setApplicationName("VideoTime");
+    QCoreApplication::setOrganizationName(QStringLiteral("ClipStamp"));
+    QCoreApplication::setApplicationName(QStringLiteral("ClipStamp"));
+    QGuiApplication::setApplicationDisplayName(QStringLiteral("ClipStamp"));
     QCoreApplication::setApplicationVersion("0.1.0");
     vt::initializeAppearance();
     QCommandLineParser parser;

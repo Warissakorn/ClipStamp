@@ -27,8 +27,8 @@ class UiTest : public QObject {
     QDateTime expected_;
 private slots:
     void initTestCase() {
-        QCoreApplication::setOrganizationName("VideoTime");
-        QCoreApplication::setApplicationName("VideoTimeUITests");
+        QCoreApplication::setOrganizationName("ClipStamp");
+        QCoreApplication::setApplicationName("ClipStampUITests");
         if (findTool("ffmpeg").isEmpty()) QSKIP("FFmpeg not installed");
         first_=dir_.filePath(QStringLiteral("หนึ่ง.mp4")); second_=dir_.filePath(QStringLiteral("สอง.mp4"));
         for(const auto &file : {first_,second_}) {
@@ -72,7 +72,7 @@ private slots:
         MainWindow window;
         window.resize(1440, 900);
         window.show();
-        const auto screenshotDir = qEnvironmentVariable("VIDEOTIME_UI_SCREENSHOT_DIR");
+        const auto screenshotDir = qEnvironmentVariable("CLIPSTAMP_UI_SCREENSHOT_DIR");
         const auto capture = [&](const QString &name) {
             if (!screenshotDir.isEmpty()) {
                 QDir().mkpath(screenshotDir);

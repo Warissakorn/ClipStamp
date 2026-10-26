@@ -6,10 +6,10 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $projectRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
-if (-not $PayloadDirectory) { $PayloadDirectory = Join-Path $projectRoot 'dist/VideoTime' }
+if (-not $PayloadDirectory) { $PayloadDirectory = Join-Path $projectRoot 'dist/ClipStamp' }
 if (-not $OutputDirectory) { $OutputDirectory = Join-Path $projectRoot 'dist/installers' }
 $payload = (Resolve-Path -LiteralPath $PayloadDirectory).Path.TrimEnd('\')
-foreach ($required in @('VideoTime.exe','Qt6Core.dll','Qt6Widgets.dll','Qt6Multimedia.dll','qt.conf','plugins/platforms/qwindows.dll','tools/ffmpeg.exe','tools/ffprobe.exe','THIRD-PARTY-NOTICES.md','licenses/NotoSansThai-OFL.txt')) {
+foreach ($required in @('ClipStamp.exe','Qt6Core.dll','Qt6Widgets.dll','Qt6Multimedia.dll','qt.conf','plugins/platforms/qwindows.dll','tools/ffmpeg.exe','tools/ffprobe.exe','THIRD-PARTY-NOTICES.md','licenses/NotoSansThai-OFL.txt')) {
     if (-not (Test-Path -LiteralPath (Join-Path $payload $required) -PathType Leaf)) { throw "Incomplete deployment, missing: $required. Run build.ps1 -Package first." }
 }
 $nsisVersion = '3.12'
@@ -28,12 +28,12 @@ if (-not $Compiler) {
     }
 }
 if (-not (Test-Path -LiteralPath $Compiler -PathType Leaf)) { throw "NSIS compiler not found: $Compiler" }
-$versionMatch = [regex]::Match((Get-Content -LiteralPath (Join-Path $projectRoot 'CMakeLists.txt') -Raw), 'project\(VideoTime VERSION (\d+\.\d+\.\d+)')
-if (-not $versionMatch.Success) { throw 'Cannot determine VideoTime version.' }
+$versionMatch = [regex]::Match((Get-Content -LiteralPath (Join-Path $projectRoot 'CMakeLists.txt') -Raw), 'project\(ClipStamp VERSION (\d+\.\d+\.\d+)')
+if (-not $versionMatch.Success) { throw 'Cannot determine ClipStamp version.' }
 $version = $versionMatch.Groups[1].Value
 $generated = Join-Path $projectRoot 'build/installer'
 New-Item -ItemType Directory -Path $generated,$OutputDirectory -Force | Out-Null
-$output = Join-Path (Resolve-Path -LiteralPath $OutputDirectory).Path "VideoTime-$version-Setup-x64.exe"
+$output = Join-Path (Resolve-Path -LiteralPath $OutputDirectory).Path "ClipStamp-$version-Setup-x64.exe"
 function Escape-Nsis([string]$Value) { return $Value.Replace('$','$$').Replace('"','$\"') }
 $files = @(Get-ChildItem -LiteralPath $payload -Recurse -File | Sort-Object FullName)
 $sizeKb = [int][Math]::Ceiling(($files | Measure-Object Length -Sum).Sum / 1024)

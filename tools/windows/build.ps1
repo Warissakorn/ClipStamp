@@ -60,7 +60,7 @@ if (-not $FFmpegDirectory) {
     if ($ffmpegCommand) { $FFmpegDirectory = Split-Path $ffmpegCommand.Source }
     elseif (Test-Path -LiteralPath 'C:/Program Files/Shotcut/ffmpeg.exe') { $FFmpegDirectory = 'C:/Program Files/Shotcut' }
 }
-if ($FFmpegDirectory) { $env:VIDEOTIME_FFMPEG_DIR = $FFmpegDirectory }
+if ($FFmpegDirectory) { $env:CLIPSTAMP_FFMPEG_DIR = $FFmpegDirectory }
 $buildDirectory = Join-Path $projectRoot 'build'
 Invoke-Checked $cmake @('-S',$projectRoot,'-B',$buildDirectory,'-G','MinGW Makefiles','-DCMAKE_BUILD_TYPE=Release',"-DCMAKE_PREFIX_PATH=$QtRoot", "-DCMAKE_CXX_COMPILER=$(Join-Path $CompilerDirectory 'g++.exe')")
 Invoke-Checked $cmake @('--build',$buildDirectory,'--parallel','4')
@@ -96,10 +96,10 @@ if ($Package) {
     $buildInfo += ''; $buildInfo += 'Included local runtime files:'
     $buildInfo += (Get-ChildItem -LiteralPath $runtimeDirectory -File | Select-Object -ExpandProperty Name)
     $buildInfo | Set-Content -LiteralPath (Join-Path $runtimeDirectory 'BUILD-INFO.txt') -Encoding utf8
-    Invoke-Checked $cmake @('-S',$projectRoot,'-B',$buildDirectory,"-DVIDEOTIME_FFMPEG_DIR=$runtimeDirectory")
-    $distDirectory = Join-Path $projectRoot 'dist/VideoTime'
+    Invoke-Checked $cmake @('-S',$projectRoot,'-B',$buildDirectory,"-DCLIPSTAMP_FFMPEG_DIR=$runtimeDirectory")
+    $distDirectory = Join-Path $projectRoot 'dist/ClipStamp'
     Invoke-Checked $cmake @('--install',$buildDirectory,'--prefix',$distDirectory)
-    Write-Host "Ready to run: $(Join-Path $distDirectory 'VideoTime.exe')"
+    Write-Host "Ready to run: $(Join-Path $distDirectory 'ClipStamp.exe')"
 }
 
 if ($Installer) {

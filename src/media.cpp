@@ -13,7 +13,10 @@ QString findTool(const QString &name) {
     const auto executable = name + QStringLiteral(".exe");
     const auto configured = QSettings().value(name + QStringLiteral("Path")).toString();
     if (QFileInfo(configured).isFile()) return configured;
-    const auto environmentDirectory = qEnvironmentVariable("VIDEOTIME_FFMPEG_DIR");
+    // Reuse tool paths saved before the application was renamed.
+    const auto legacyConfigured = QSettings(QStringLiteral("VideoTime"), QStringLiteral("VideoTime")).value(name + QStringLiteral("Path")).toString();
+    if (QFileInfo(legacyConfigured).isFile()) return legacyConfigured;
+    const auto environmentDirectory = qEnvironmentVariable("CLIPSTAMP_FFMPEG_DIR", qEnvironmentVariable("VIDEOTIME_FFMPEG_DIR"));
     if (!environmentDirectory.isEmpty()) {
         const auto file = QDir(environmentDirectory).filePath(executable);
         if (QFileInfo(file).isFile()) return file;
