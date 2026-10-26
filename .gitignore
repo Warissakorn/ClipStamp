@@ -1,0 +1,38 @@
+# Downloaded SDKs, build outputs, and packages
+/.tools/
+/build/
+/build-*/
+/cmake-build-*/
+/dist/
+/%SystemDrive%/
+
+# CMake and Qt Creator local state
+/CMakeUserPresets.json
+CMakeCache.txt
+CMakeFiles/
+*.user
+*.user.*
+
+# Local caches, logs, and temporary files
+/.cache/
+*.log
+*.tmp
+*.bak
+*~
+__pycache__/
+*.py[cod]
+
+# Machine-specific editor and OS files
+/.vs/
+/.idea/
+Thumbs.db
+[Dd]esktop.ini
+.DS_Store
+
+# Local environment files and private keys
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
